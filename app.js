@@ -38,9 +38,11 @@ var cs=D.deckCorrections.filter(function(c){return c.slide===s.number});
   h('div',{class:'card say'},h('span',{class:'tag'},'Say'),h('p',{},s.bridgeToNext.spokenTransition)),h('p',{class:'muted'},nx?'Next: '+nx.number+'. '+nx.title:'Final slide.')));
  m.appendChild(ctl(false));return m}
 function ctl(top){var p=state.cur>0,n=state.cur<N-1;
- return h('div',{class:'ctl'},h('button',{class:'btn',disabled:p?null:'',onclick:function(){go('slide',state.cur-1)}},'← Previous'),
-  h('button',{class:'btn',onclick:openDefs},'Terms (D)'),
-  h('button',{class:'btn pri',disabled:n?null:'',onclick:function(){go('slide',state.cur+1)}},'Next →'))}
+ var prev=h('button',{class:'btn',onclick:function(){go('slide',state.cur-1)}},'← Previous');
+ var termsButton=h('button',{class:'btn',onclick:openDefs},'Terms (D)');
+ var next=h('button',{class:'btn pri',onclick:function(){go('slide',state.cur+1)}},'Next →');
+ prev.disabled=!p;next.disabled=!n;
+ return h('div',{class:'ctl'},prev,termsButton,next)}
 function openDefs(){var d=$('defs'),q=$('dq');q.value='';fillDefs();d.showModal()}
 function fillDefs(){var f=$('dq').value.toLowerCase(),cur=S[state.cur].number,o=$('deflist');o.textContent='';
  order.map(function(i){return terms[i]}).filter(function(t){return t.slide<=cur&&(t.term+' '+t.def).toLowerCase().indexOf(f)>-1}).forEach(function(t){o.appendChild(h('div',{class:'card defs'},h('b',{},t.term),h('p',{},t.def),h('small',{class:'muted'},'Slide '+t.slide+', beat '+t.beat)))})}
